@@ -1,7 +1,7 @@
 #include <iostream>
+#include <tuple>
 #include <utility>
 #include <vector>
-#include <tuple>
 
 #include "string_01.h"
 
@@ -27,7 +27,7 @@ class Modifier
     Code code;
 
   public:
-    Modifier(Code pCode)
+    explicit Modifier(Code pCode)
         : code(pCode)
     {
     }
@@ -77,7 +77,7 @@ auto main() -> int
     std::vector<std::pair<std::string, int>> data_count_vowels = {{"abc", 1}, {"xZz", 0}, {"Litwo, ojczyzno moja", 7}};
 
     for (const auto& data : data_count_vowels) {
-        verify("count_vovels", count_vowels, data.second, data.first);
+        verify("count_vowels", count_vowels, data.second, data.first);
     }
 
     // ---
@@ -94,6 +94,14 @@ auto main() -> int
 
     for (const auto& data : data_search_substr) {
         verify("search_substr", search_substr, std::get<2>(data), std::get<0>(data), std::get<1>(data));
+    }
+
+    // ---
+    std::vector<std::tuple<const char*, const char*, int>> data_custom_serach = {
+        {"abc", "d", -1}, {"xZz", "z", 2}, {"Litwo, ojczyzno moja", "ojcz", 7}};
+
+    for (const auto& data : data_custom_serach) {
+        verify("custom_serach", custom_serach, std::get<2>(data), std::get<0>(data), std::get<1>(data));
     }
 
     return 0;

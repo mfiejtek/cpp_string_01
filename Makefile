@@ -8,8 +8,11 @@ all: $(execs) $(tests)
 clean:
 	rm $(execs)
 
-test: $(execs)
+test: $(execs) $(tests)
 	@$(foreach test, $(tests), echo "RUNNING: $(test)" && ./$(test))
+
+checks:
+	cppcheck --inline-suppr --enable=all --inconclusive --library=posix --suppress=missingIncludeSystem .
 
 % : %.cc
 	g++ -g -std=c++17 $< -o $@
