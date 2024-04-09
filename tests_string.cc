@@ -51,7 +51,7 @@ auto verify(const char* fname, F func, R ref_value, I... inputs) -> bool
         std::cout << green << "Test passed" << def;
     }
     std::cout << " for INPUT: ";
-    ((std::cout << ' ' << inputs), ...) << "  OUTPUT: " << out_value << '\n';
+    ((std::cout << ' ' << inputs), ...) << "  OUTPUT: " << out_value << "  EXPECTED: " << ref_value << '\n';
 
     return true;
 }
@@ -81,7 +81,9 @@ auto main() -> int
                                                                             {"xZz qwe", "XZz Qwe"},
                                                                             {"xZz\nqwe", "XZz\nQwe"},
                                                                             {"xZz\tqwe", "XZz\tQwe"},
-                                                                            {"Litwo, ojczyzno moja", "Litwo, Ojczyzno Moja"}};
+                                                                            {"Litwo, ojczyzno moja", "Litwo, Ojczyzno Moja"},
+                                                                            {"bielsko-biała", "Bielsko-Biała"},
+                                                                            {"raz.dwa,trzy;cztery", "Raz.Dwa,Trzy;Cztery"}};
 
     {
         const auto start {std::chrono::steady_clock::now()};
