@@ -1,3 +1,4 @@
+#include <chrono>
 #include <iostream>
 #include <tuple>
 #include <utility>
@@ -7,7 +8,6 @@
 
 using namespace string_toys;
 
-#include <ostream>
 namespace Color
 {
 enum Code
@@ -58,51 +58,104 @@ auto verify(const char* fname, F func, R ref_value, I... inputs) -> bool
 
 auto main() -> int
 {
-    std::vector<std::pair<std::string, std::string>> data_reverse = {
-        {"abc", "cba"}, {"xZz\nqwe", "ewq\nzZx"}, {"Litwo, ojczyzno moja", "ajom onzyzcjo ,owtiL"}};
+    std::vector<std::pair<std::string, std::string>> data_reverse = {{"abc", "cba"},
+                                                                     {"xZz qwe", "ewq zZx"},
+                                                                     {"xZz\nqwe", "ewq\nzZx"},
+                                                                     {"xZz\tqwe", "ewq\tzZx"},
+                                                                     {"Litwo, ojczyzno moja", "ajom onzyzcjo ,owtiL"}};
 
-    for (const auto& data : data_reverse) {
-        verify("reverse", reverse, data.second, data.first);
+    {
+        const auto start {std::chrono::steady_clock::now()};
+
+        for (const auto& data : data_reverse) {
+            verify("reverse", reverse, data.second, data.first);
+        }
+
+        const auto end {std::chrono::steady_clock::now()};
+        const std::chrono::duration<double> elapsed_seconds {end - start};
+        std::cout << "\nElapsed time: " << elapsed_seconds.count() << '\n';
     }
 
     // ---
-    std::vector<std::pair<std::string, std::string>> data_first_to_upper = {
-        {"abc", "Abc"}, {"xZz\nqwe", "XZz\nQwe"}, {"Litwo, ojczyzno moja", "Litwo, Ojczyzno Moja"}};
+    std::vector<std::pair<std::string, std::string>> data_first_to_upper = {{"abc", "Abc"},
+                                                                            {"xZz qwe", "XZz Qwe"},
+                                                                            {"xZz\nqwe", "XZz\nQwe"},
+                                                                            {"xZz\tqwe", "XZz\tQwe"},
+                                                                            {"Litwo, ojczyzno moja", "Litwo, Ojczyzno Moja"}};
 
-    for (const auto& data : data_first_to_upper) {
-        verify("first_to_upper", first_to_upper, data.second, data.first);
+    {
+        const auto start {std::chrono::steady_clock::now()};
+
+        for (const auto& data : data_first_to_upper) {
+            verify("first_to_upper", first_to_upper, data.second, data.first);
+        }
+
+        const auto end {std::chrono::steady_clock::now()};
+        const std::chrono::duration<double> elapsed_seconds {end - start};
+        std::cout << "\nElapsed time: " << elapsed_seconds.count() << '\n';
     }
 
     // ---
-    std::vector<std::pair<std::string, int>> data_count_vowels = {{"abc", 1}, {"xZz", 0}, {"Litwo, ojczyzno moja", 7}};
+    std::vector<std::pair<std::string, int>> data_count_vowels = {{"abc", 1}, {"xZz", 0}, {"xZz\nqwe", 1}, {"Litwo, ojczyzno moja", 7}};
 
-    for (const auto& data : data_count_vowels) {
-        verify("count_vowels", count_vowels, data.second, data.first);
+    {
+        const auto start {std::chrono::steady_clock::now()};
+
+        for (const auto& data : data_count_vowels) {
+            verify("count_vowels", count_vowels, data.second, data.first);
+        }
+
+        const auto end {std::chrono::steady_clock::now()};
+        const std::chrono::duration<double> elapsed_seconds {end - start};
+        std::cout << "\nElapsed time: " << elapsed_seconds.count() << '\n';
     }
 
     // ---
     std::vector<std::pair<std::string, int>> data_sum_digits = {
         {"abc", 0}, {"xZz", 0}, {"Countdown: 3... 2... 1... Start!", 6}, {"First prime numbers are: 3, 5, 7, 11, 13", 21}};
 
-    for (const auto& data : data_sum_digits) {
-        verify("sum_digits", sum_digits, data.second, data.first);
+    {
+        const auto start {std::chrono::steady_clock::now()};
+
+        for (const auto& data : data_sum_digits) {
+            verify("sum_digits", sum_digits, data.second, data.first);
+        }
+
+        const auto end {std::chrono::steady_clock::now()};
+        const std::chrono::duration<double> elapsed_seconds {end - start};
+        std::cout << "\nElapsed time: " << elapsed_seconds.count() << '\n';
     }
 
     // ---
     std::vector<std::tuple<std::string, std::string, int>> data_search_substr = {
-        {"abc", "d", -1}, {"xZz", "z", 2}, {"Litwo, ojczyzno moja", "ojcz", 7}};
+        {"abc", "d", -1}, {"xZz", "z", 2}, {"Litwo, ojczyzno moja", "ojcz", 7}, {"First prime numbers are: 3, 5, 7, 11, 13", "3", 25}};
 
-    for (const auto& data : data_search_substr) {
-        verify("search_substr", search_substr, std::get<2>(data), std::get<0>(data), std::get<1>(data));
+    {
+        const auto start {std::chrono::steady_clock::now()};
+
+        for (const auto& data : data_search_substr) {
+            verify("search_substr", search_substr, std::get<2>(data), std::get<0>(data), std::get<1>(data));
+        }
+
+        const auto end {std::chrono::steady_clock::now()};
+        const std::chrono::duration<double> elapsed_seconds {end - start};
+        std::cout << "\nElapsed time: " << elapsed_seconds.count() << '\n';
     }
 
     // ---
     std::vector<std::tuple<const char*, const char*, int>> data_custom_serach = {
-        {"abc", "d", -1}, {"xZz", "z", 2}, {"Litwo, ojczyzno moja", "ojcz", 7}};
+        {"abc", "d", -1}, {"xZz", "z", 2}, {"Litwo, ojczyzno moja", "ojcz", 7}, {"First prime numbers are: 3, 5, 7, 11, 13", "3", 25}};
 
-    for (const auto& data : data_custom_serach) {
-        verify("custom_serach", custom_serach, std::get<2>(data), std::get<0>(data), std::get<1>(data));
+    {
+        const auto start {std::chrono::steady_clock::now()};
+
+        for (const auto& data : data_custom_serach) {
+            verify("custom_serach", custom_serach, std::get<2>(data), std::get<0>(data), std::get<1>(data));
+        }
+
+        const auto end {std::chrono::steady_clock::now()};
+        const std::chrono::duration<double> elapsed_seconds {end - start};
+        std::cout << "\nElapsed time: " << elapsed_seconds.count() << '\n';
     }
-
     return 0;
 }
